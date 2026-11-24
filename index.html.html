@@ -1,0 +1,202 @@
+<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>कार्यालय वास्तु शांति एवं श्री सत्यनारायण पूजा — क्रमबद्ध सॉफ्टवेयर</title>
+<style>
+:root{--saffron:#8a3b12;--gold:#c28a27;--paper:#fffdf8;--ink:#28231e}
+*{box-sizing:border-box}body{margin:0;background:#f4efe6;color:var(--ink);font-family:system-ui,'Noto Sans Devanagari',sans-serif;line-height:1.75}
+header{background:linear-gradient(135deg,#71310e,#b56b1f);color:white;padding:28px 18px}header h1{margin:0 0 8px;font-size:1.7rem}
+main{max-width:1000px;margin:20px auto;padding:0 14px}.intro,.section,.warning{background:var(--paper);border:1px solid #e4d7c3;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 2px 9px #00000008}
+.warning{border-left:5px solid var(--gold);background:#fff7e8}
+h2{color:var(--saffron);font-size:1.35rem;margin-top:0}h3{margin:12px 0 4px;color:#6d421d}
+.mantra{background:#fbf2e5;border-radius:8px;padding:10px 13px;font-size:1.08rem;margin:8px 0;white-space:normal}
+.controls{position:sticky;top:0;background:#f4efe6ee;padding:8px 0;z-index:5;display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:8px;background:#85410f;color:#fff;padding:10px 14px;font-size:1rem;cursor:pointer}
+button.secondary{background:#5d554c}.step{border-top:1px solid #eadfce;padding:10px 0}.step:first-of-type{border-top:0}
+table{width:100%;border-collapse:collapse;background:white}th,td{border:1px solid #ddcfba;padding:8px;text-align:left}th{background:#f1e4d0}.num{width:55px;text-align:center}
+.small{font-size:.92rem;color:#62584d}.check{margin-right:8px}
+@media print{body{background:white}.controls{display:none}main{max-width:none;margin:0}.intro,.section,.warning{box-shadow:none;break-inside:avoid}header{background:white;color:black;border-bottom:2px solid #333}}
+
+.editbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.editing [data-editable="true"]{outline:2px dashed #c28a27;outline-offset:3px;border-radius:4px;min-width:20px}
+.edit-tools{display:none;gap:5px;flex-wrap:wrap;margin:8px 0}
+.editing .edit-tools{display:flex}
+.edit-tools button{font-size:.85rem;padding:6px 9px}
+.editing .step{background:#fffaf0;padding:14px;border-radius:8px;margin:10px 0}
+#editStatus{font-size:.9rem;color:#5b4a36}
+
+</style></head><body>
+<header><h1>कार्यालय वास्तु शांति एवं श्री सत्यनारायण पूजा</h1><div>पूर्व-पूजा से अंतिम समापन तक — एक ही क्रमबद्ध पूजा सॉफ्टवेयर</div></header>
+<main>
+<div class="intro"><b>पूजा का निश्चित क्रम</b><p>पूर्व-पूजा विधि → आवाहन → षोडशोपचार → प्रधान देवता पूजा → सत्यनारायण कथा → 108 आहुति हवन → आरती → क्षमा प्रार्थना → विसर्जन → आसन-जल एवं अंतिम मंत्र।</p>
+<div class="small">हर चरण को क्रम से पूरा करें। प्रिंट बटन से पूरी पूजा की प्रति निकाल सकते हैं।</div></div>
+<div class="intro"><b>आचार्य उपयोग हेतु पूजा-पाठ</b><p>यह पूजा-सॉफ्टवेयर आरम्भ से समापन तक क्रमबद्ध पाठ-सहायक के रूप में बनाया गया है। इसमें पूर्व-पूजा, आवाहन, षोडशोपचार, प्रधान देवता पूजा, कथा, हवन, आरती, क्षमा-प्रार्थना, विसर्जन और अंतिम आसन-विधि एक ही क्रम में दी गई हैं। आचार्य अपनी परंपरा के अनुसार मंत्र-पाठ, देवता-क्रम, उपचार और विधान का चयन एवं संशोधन कर सकते हैं।</p></div>
+<div class="controls"><button onclick="window.print()">पूरी पूजा प्रिंट / PDF</button><button class="secondary" onclick="document.querySelectorAll('details').forEach(x=>x.open=true)">सभी चरण खोलें</button><button class="secondary" onclick="document.querySelectorAll('details').forEach(x=>x.open=false)">सभी चरण बंद करें</button></div>
+<div class="intro" id="editorPanel">
+  <b>पूजा सामग्री एडिट करें</b>
+  <p>एडिट मोड चालू करने पर मंत्र, शीर्षक और विवरण सीधे बदल सकते हैं। हर चरण में नया भाग जोड़ें, ऊपर-नीचे करें या हटाएँ।</p>
+  <div class="editbar">
+    <button type="button" id="editToggle">एडिट मोड चालू करें</button>
+    <button type="button" class="secondary" id="saveEdits">बदलाव सेव करें</button>
+    <button type="button" class="secondary" id="exportEdits">अपडेटेड HTML डाउनलोड करें</button>
+    <button type="button" class="secondary" id="resetEdits">मूल सामग्री वापस लाएँ</button>
+  </div>
+  <div id="editStatus">एडिट मोड बंद है।</div>
+</div>
+
+<section class="section"><details open><summary><h2 style="display:inline">1. पूर्व-पूजा विधि</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> आसन ग्रहण एवं शुद्धि</h3><div data-editable="true">पूजा-स्थान स्वच्छ करके पूर्व या उत्तर की ओर मुख करके आसन पर बैठें। दीपक प्रज्वलित करें।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> पवित्रीकरण</h3><div data-editable="true">दाहिने हाथ में जल लेकर पवित्रीकरण करें।</div><div class="mantra" data-editable="true">ॐ अपवित्रः पवित्रो वा सर्वावस्थां गतोऽपि वा।<br>यः स्मरेत् पुण्डरीकाक्षं स बाह्याभ्यन्तरः शुचिः॥</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> आचमन</h3><div data-editable="true">तीन बार जल से आचमन करें।</div><div class="mantra" data-editable="true">ॐ केशवाय नमः।<br>ॐ नारायणाय नमः।<br>ॐ माधवाय नमः।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> प्राणायाम</h3><div data-editable="true">गायत्री मंत्र से सहज प्राणायाम करें। श्वास को बलपूर्वक न रोकें।</div><div class="mantra" data-editable="true">ॐ भूः। ॐ भुवः। ॐ सुवः। ॐ महः। ॐ जनः। ॐ तपः। ॐ सत्यम्।<br>ॐ तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि। धियो यो नः प्रचोदयात्॥<br>ॐ आपो ज्योती रसोऽमृतं ब्रह्म भूर्भुवः सुवरोम्॥</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> करन्यास एवं अंगन्यास</h3><div data-editable="true">गायत्री मंत्र के बीज/अक्षर-न्यास की अनेक परंपराएँ हैं। नीचे प्रचलित षडङ्ग-न्यास का संक्षिप्त रूप है; अपनी शाखा के अनुसार पुष्टि करें।</div><div class="mantra" data-editable="true">ॐ हृदयाय नमः।<br>ॐ शिरसे स्वाहा।<br>ॐ शिखायै वषट्।<br>ॐ कवचाय हुं।<br>ॐ नेत्रत्रयाय वौषट्।<br>ॐ अस्त्राय फट्।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> संकल्प</h3><div data-editable="true">दाहिने हाथ में जल, अक्षत, पुष्प लेकर देश-काल, अपना नाम, गोत्र, कार्यालय/गृह का स्थान तथा पूजा का उद्देश्य बोलें; अंत में जल छोड़ें।</div><div class="mantra" data-editable="true">मम सकुटुम्बस्य क्षेम-स्थैर्य-आयुरारोग्य-ऐश्वर्याभिवृद्ध्यर्थं, नवीन कार्यालये शुभारम्भे, वास्तुशान्ति-श्रीसत्यनारायणपूजनं करिष्ये।</div></div></details></section><section class="section"><details open><summary><h2 style="display:inline">2. आवाहन एवं प्रारम्भिक देवता पूजन</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> पृथ्वी पूजन</h3><div data-editable="true">भूमि को गंध, अक्षत, पुष्प अर्पित करें।</div><div class="mantra" data-editable="true">ॐ पृथिव्यै नमः। आवाहयामि, स्थापयामि, पूजयामि।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> गणेश आवाहन</h3><div data-editable="true">गणेशजी को पुष्प-अक्षत अर्पित कर आवाहन करें।</div><div class="mantra" data-editable="true">ॐ गं गणपतये नमः। श्रीमहागणपतिमावाहयामि, स्थापयामि, पूजयामि।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> गौरी पूजन</h3><div data-editable="true">माता गौरी को सौभाग्य-द्रव्य, पुष्प और अक्षत अर्पित करें।</div><div class="mantra" data-editable="true">ॐ गौर्यै नमः। गौरीमावाहयामि, स्थापयामि, पूजयामि।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> कलश एवं वरुण आवाहन</h3><div data-editable="true">कलश में जल, अक्षत, सुपारी, दूर्वा/पुष्प रखें; ऊपर आम्रपल्लव और नारियल रखें।</div><div class="mantra" data-editable="true">ॐ वरुणाय नमः। इहागच्छ, इह तिष्ठ, मम पूजां गृहाण।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> षोडश मातृका पूजन</h3><div data-editable="true">अपनी कुल-परंपरा की मातृका नामावली के अनुसार 16 मातृशक्तियों को अक्षत-पुष्प अर्पित करें। नामावली संप्रदायानुसार भिन्न हो सकती है।</div><div class="mantra" data-editable="true">ॐ षोडशमातृकाभ्यो नमः। आवाहयामि, स्थापयामि, पूजयामि।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> नवग्रह आवाहन एवं पूजन</h3><div data-editable="true">सूर्य से केतु तक नवग्रहों को क्रमशः आवाहन कर पुष्प-अक्षत अर्पित करें।</div><div class="mantra" data-editable="true">ॐ सूर्याय नमः। ॐ सोमाय नमः। ॐ भौमाय नमः। ॐ बुधाय नमः। ॐ बृहस्पतये नमः। ॐ शुक्राय नमः। ॐ शनैश्चराय नमः। ॐ राहवे नमः। ॐ केतवे नमः।</div></div></details></section><section class="section"><details open><summary><h2 style="display:inline">3. षोडशोपचार पूजा — प्रत्येक आवाहित देवता के लिए</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> षोडशोपचार का क्रम</h3><div data-editable="true">आसन, पाद्य, अर्घ्य, आचमन, स्नान, वस्त्र, यज्ञोपवीत, गंध, अक्षत, पुष्प, धूप, दीप, नैवेद्य, ताम्बूल, दक्षिणा/प्रदक्षिणा, नमस्कार अर्पित करें।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> षोडशोपचार स्मरणार्थ श्लोक</h3><div class="mantra" data-editable="true">आसनं पाद्यं आचमनं स्नानं वस्त्रं तथा।<br>यज्ञोपवीतं गन्धं च अक्षतं पुष्पमालिकाम्॥<br><br>धूपं दीपं नैवेद्यं ताम्बूलं दक्षिणां च।<br>ततः सर्वान् नमस्कृत्य दैवतान् सन्तोषयेत्॥</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> उपचार मंत्र</h3><div data-editable="true">प्रत्येक उपचार में देवता का नाम लेकर अर्पण करें।</div><div class="mantra" data-editable="true">ॐ [देवतानाम] नमः आसनं समर्पयामि।<br>ॐ [देवतानाम] नमः पाद्यं समर्पयामि।<br>ॐ [देवतानाम] नमः अर्घ्यं समर्पयामि।<br>ॐ [देवतानाम] नमः आचमनीयं समर्पयामि।<br>ॐ [देवतानाम] नमः स्नानं समर्पयामि।<br>ॐ [देवतानाम] नमः वस्त्रं समर्पयामि।<br>ॐ [देवतानाम] नमः यज्ञोपवीतं समर्पयामि।<br>ॐ [देवतानाम] नमः गन्धं समर्पयामि।<br>ॐ [देवतानाम] नमः अक्षतान् समर्पयामि।<br>ॐ [देवतानाम] नमः पुष्पाणि समर्पयामि।<br>ॐ [देवतानाम] नमः धूपमाघ्रापयामि।<br>ॐ [देवतानाम] नमः दीपं दर्शयामि।<br>ॐ [देवतानाम] नमः नैवेद्यं निवेदयामि।<br>ॐ [देवतानाम] नमः ताम्बूलं समर्पयामि।<br>ॐ [देवतानाम] नमः दक्षिणां समर्पयामि।<br>ॐ [देवतानाम] नमः नमस्कारान् समर्पयामि।</div></div></details></section><section class="section"><details open><summary><h2 style="display:inline">4. प्रधान देवता पूजा</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> वास्तु पुरुष आवाहन</h3><div data-editable="true">वास्तु मंडल/स्थापित वास्तु-कलश के समक्ष पुष्प-अक्षत अर्पित करें। 81-पद वास्तु मंडल की देवता-स्थापना परंपरा के अनुसार होती है।</div><div class="mantra" data-editable="true">ॐ वास्तुपुरुषाय नमः। इहागच्छ, इह तिष्ठ, मम पूजां गृहाण।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> वास्तु शांति पूजन</h3><div data-editable="true">वास्तु पुरुष, ब्रह्मा, अनन्त, दिक्पाल तथा मंडल-देवताओं का अपनी परंपरा के अनुसार पूजन करें।</div><div class="mantra" data-editable="true">ॐ वास्तोष्पते प्रतिजानीह्यस्मान् स्वावेशो अनमीवो भवा नः।<br>यत्त्वेमहे प्रति तन्नो जुषस्व शं नो भव द्विपदे शं चतुष्पदे॥</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> सत्यनारायण भगवान आवाहन</h3><div data-editable="true">भगवान विष्णु/सत्यनारायण के चित्र, मूर्ति या कलश के समक्ष आवाहन करें।</div><div class="mantra" data-editable="true">ॐ नमो भगवते वासुदेवाय। श्रीसत्यनारायणं आवाहयामि, स्थापयामि, पूजयामि।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> सत्यनारायण षोडशोपचार</h3><div data-editable="true">ऊपर दिए गए 16 उपचार भगवान सत्यनारायण को समर्पित करें।</div><div class="mantra" data-editable="true">ॐ नमो भगवते वासुदेवाय नमः। इदं आसनम्, पाद्यम्, अर्घ्यम् ... सर्वोपचारान् समर्पयामि।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> लक्ष्मी-नारायण एवं परिवार</h3><div data-editable="true">लक्ष्मीजी, गरुड़, सुदर्शन तथा पूज्य कुलदेवता-कुलदेवी का स्मरण/पूजन करें।</div><div class="mantra" data-editable="true">ॐ श्रीं महालक्ष्म्यै नमः।<br>ॐ विष्णवे नमः।<br>ॐ गरुडाय नमः।<br>ॐ सुदर्शनाय नमः।</div></div></details></section><section class="section"><details open><summary><h2 style="display:inline">5. सत्यनारायण व्रत कथा</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> कथा आरम्भ</h3><div data-editable="true">पूजा के बाद श्रद्धापूर्वक सत्यनारायण व्रत कथा सुनें/पढ़ें। परंपरागत पाँच अध्यायों का पूर्ण पाठ क्षेत्रीय पोथी के अनुसार रखें।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> अध्याय 1 — नारद प्रश्न एवं व्रत-माहात्म्य</h3><div data-editable="true">नारदजी के प्रश्न पर भगवान विष्णु सत्यनारायण व्रत का माहात्म्य बताते हैं। निर्धन, दुःखी और गृहस्थ सभी श्रद्धा से व्रत कर सकते हैं।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> अध्याय 2 — निर्धन ब्राह्मण</h3><div data-editable="true">एक निर्धन ब्राह्मण भगवान का व्रत करता है और कृपा से उसके जीवन में समृद्धि आती है। कथा श्रद्धा, सत्य और प्रसाद-स्वीकार का महत्व बताती है।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> अध्याय 3 — लकड़हारा एवं साधु/व्यापारी</h3><div data-editable="true">लकड़हारा व्रत का संकल्प लेकर लाभ पाता है। व्यापारी साधु व्रत का संकल्प करता है; कथा में संकल्प-पालन का महत्व आता है।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> अध्याय 4 — व्यापारी, लीलावती और कलावती</h3><div data-editable="true">संकल्प भूलने और प्रसाद का अनादर करने से कष्ट आता है; सत्यनारायण की पूजा और प्रसाद-ग्रहण से संकट दूर होता है।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> अध्याय 5 — राजा तुंगध्वज</h3><div data-editable="true">राजा तुंगध्वज प्रसाद का अनादर करता है और विपत्ति आती है। पश्चात्ताप, पूजा और प्रसाद-स्वीकार से कल्याण होता है।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> कथा फलश्रुति</h3><div data-editable="true">कथा के बाद भगवान को प्रणाम करें और प्रसाद सभी में वितरित करें।</div></div></details></section><section class="section"><details open><summary><h2 style="display:inline">6. हवन — 108 देवता आहुति मंत्र</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> हवन प्रारम्भ</h3><div data-editable="true">हवनकुण्ड में सुरक्षित रूप से अग्नि प्रज्वलित करें। घी की अल्प आहुति देकर अग्नि का ध्यान करें।</div><div class="mantra" data-editable="true">ॐ अग्नये स्वाहा। इदं अग्नये इदं न मम।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> आहुति विधि</h3><div data-editable="true">नीचे क्रम से प्रत्येक मंत्र पर एक आहुति दें। सभी मंत्रों में स्वाहा उच्चारित है। आहुति संख्या 108 है।</div></div><h3>108 आहुति — प्रत्येक मंत्र पर एक आहुति</h3><table><thead><tr><th>क्रम</th><th>देवता</th><th>मंत्र</th></tr></thead><tbody><tr><td class="num">1</td><td>पृथ्वी देवता</td><td>ॐ पृथिव्यै नमः स्वाहा</td></tr><tr><td class="num">2</td><td>भूमि देवी</td><td>ॐ भूम्यै नमः स्वाहा</td></tr><tr><td class="num">3</td><td>गणपति</td><td>ॐ गं गणपतये नमः स्वाहा</td></tr><tr><td class="num">4</td><td>विघ्नराज</td><td>ॐ विघ्नराजाय नमः स्वाहा</td></tr><tr><td class="num">5</td><td>गौरी देवी</td><td>ॐ गौर्यै नमः स्वाहा</td></tr><tr><td class="num">6</td><td>उमा देवी</td><td>ॐ उमायै नमः स्वाहा</td></tr><tr><td class="num">7</td><td>कलशस्थ वरुण</td><td>ॐ वरुणाय नमः स्वाहा</td></tr><tr><td class="num">8</td><td>गंगा देवी</td><td>ॐ गङ्गायै नमः स्वाहा</td></tr><tr><td class="num">9</td><td>यमुना देवी</td><td>ॐ यमुनायै नमः स्वाहा</td></tr><tr><td class="num">10</td><td>षोडश मातृका—गौरी</td><td>ॐ गौर्यै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">11</td><td>षोडश मातृका—पद्मा</td><td>ॐ पद्मायै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">12</td><td>षोडश मातृका—शची</td><td>ॐ शच्यै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">13</td><td>षोडश मातृका—मेधा</td><td>ॐ मेधायै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">14</td><td>षोडश मातृका—सावित्री</td><td>ॐ सावित्र्यै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">15</td><td>षोडश मातृका—विजया</td><td>ॐ विजयायै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">16</td><td>षोडश मातृका—जया</td><td>ॐ जयायै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">17</td><td>षोडश मातृका—देवसेना</td><td>ॐ देवसेनायै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">18</td><td>षोडश मातृका—स्वधा</td><td>ॐ स्वधायै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">19</td><td>षोडश मातृका—स्वाहा</td><td>ॐ स्वाहायै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">20</td><td>षोडश मातृका—मातृ</td><td>ॐ मातृभ्यो नमः स्वाहा</td></tr><tr><td class="num">21</td><td>षोडश मातृका—लोकमातृ</td><td>ॐ लोकमातृभ्यो नमः स्वाहा</td></tr><tr><td class="num">22</td><td>षोडश मातृका—धृति</td><td>ॐ धृत्यै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">23</td><td>षोडश मातृका—पुष्टि</td><td>ॐ पुष्ट्यै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">24</td><td>षोडश मातृका—तुष्टि</td><td>ॐ तुष्ट्यै मातृकायै नमः स्वाहा</td></tr><tr><td class="num">25</td><td>षोडश मातृका—कुलदेवी</td><td>ॐ कुलदेव्यै नमः स्वाहा</td></tr><tr><td class="num">26</td><td>षोडश मातृका—ग्रामदेवी</td><td>ॐ ग्रामदेव्यै नमः स्वाहा</td></tr><tr><td class="num">27</td><td>सूर्य ग्रह</td><td>ॐ सूर्याय नमः स्वाहा</td></tr><tr><td class="num">28</td><td>चन्द्र ग्रह</td><td>ॐ सोमाय नमः स्वाहा</td></tr><tr><td class="num">29</td><td>मंगल ग्रह</td><td>ॐ भौमाय नमः स्वाहा</td></tr><tr><td class="num">30</td><td>बुध ग्रह</td><td>ॐ बुधाय नमः स्वाहा</td></tr><tr><td class="num">31</td><td>बृहस्पति ग्रह</td><td>ॐ बृहस्पतये नमः स्वाहा</td></tr><tr><td class="num">32</td><td>शुक्र ग्रह</td><td>ॐ शुक्राय नमः स्वाहा</td></tr><tr><td class="num">33</td><td>शनि ग्रह</td><td>ॐ शनैश्चराय नमः स्वाहा</td></tr><tr><td class="num">34</td><td>राहु ग्रह</td><td>ॐ राहवे नमः स्वाहा</td></tr><tr><td class="num">35</td><td>केतु ग्रह</td><td>ॐ केतवे नमः स्वाहा</td></tr><tr><td class="num">36</td><td>इन्द्र दिक्पाल</td><td>ॐ इन्द्राय नमः स्वाहा</td></tr><tr><td class="num">37</td><td>अग्नि दिक्पाल</td><td>ॐ अग्नये नमः स्वाहा</td></tr><tr><td class="num">38</td><td>यम दिक्पाल</td><td>ॐ यमाय नमः स्वाहा</td></tr><tr><td class="num">39</td><td>नैऋति दिक्पाल</td><td>ॐ नैऋत्यै नमः स्वाहा</td></tr><tr><td class="num">40</td><td>वरुण दिक्पाल</td><td>ॐ वरुणाय नमः स्वाहा</td></tr><tr><td class="num">41</td><td>वायु दिक्पाल</td><td>ॐ वायवे नमः स्वाहा</td></tr><tr><td class="num">42</td><td>कुबेर दिक्पाल</td><td>ॐ कुबेराय नमः स्वाहा</td></tr><tr><td class="num">43</td><td>ईशान दिक्पाल</td><td>ॐ ईशानाय नमः स्वाहा</td></tr><tr><td class="num">44</td><td>ब्रह्मा</td><td>ॐ ब्रह्मणे नमः स्वाहा</td></tr><tr><td class="num">45</td><td>अनन्त</td><td>ॐ अनन्ताय नमः स्वाहा</td></tr><tr><td class="num">46</td><td>वास्तुपुरुष</td><td>ॐ वास्तुपुरुषाय नमः स्वाहा</td></tr><tr><td class="num">47</td><td>ध्रुव</td><td>ॐ ध्रुवाय नमः स्वाहा</td></tr><tr><td class="num">48</td><td>आर्यमा</td><td>ॐ अर्यम्णे नमः स्वाहा</td></tr><tr><td class="num">49</td><td>विवस्वान</td><td>ॐ विवस्वते नमः स्वाहा</td></tr><tr><td class="num">50</td><td>मित्र</td><td>ॐ मित्राय नमः स्वाहा</td></tr><tr><td class="num">51</td><td>पर्जन्य</td><td>ॐ पर्जन्याय नमः स्वाहा</td></tr><tr><td class="num">52</td><td>जयन्त</td><td>ॐ जयन्ताय नमः स्वाहा</td></tr><tr><td class="num">53</td><td>महेंद्र</td><td>ॐ महेन्द्राय नमः स्वाहा</td></tr><tr><td class="num">54</td><td>सत्यनारायण भगवान</td><td>ॐ नमो भगवते वासुदेवाय स्वाहा</td></tr><tr><td class="num">55</td><td>श्रीविष्णु</td><td>ॐ विष्णवे नमः स्वाहा</td></tr><tr><td class="num">56</td><td>नारायण</td><td>ॐ नारायणाय नमः स्वाहा</td></tr><tr><td class="num">57</td><td>लक्ष्मीपति</td><td>ॐ लक्ष्मीपतये नमः स्वाहा</td></tr><tr><td class="num">58</td><td>लक्ष्मी देवी</td><td>ॐ श्रीं महालक्ष्म्यै नमः स्वाहा</td></tr><tr><td class="num">59</td><td>लक्ष्मी-नारायण</td><td>ॐ लक्ष्मीनारायणाभ्यां नमः स्वाहा</td></tr><tr><td class="num">60</td><td>श्रीधर</td><td>ॐ श्रीधराय नमः स्वाहा</td></tr><tr><td class="num">61</td><td>माधव</td><td>ॐ माधवाय नमः स्वाहा</td></tr><tr><td class="num">62</td><td>गोविन्द</td><td>ॐ गोविन्दाय नमः स्वाहा</td></tr><tr><td class="num">63</td><td>मधुसूदन</td><td>ॐ मधुसूदनाय नमः स्वाहा</td></tr><tr><td class="num">64</td><td>त्रिविक्रम</td><td>ॐ त्रिविक्रमाय नमः स्वाहा</td></tr><tr><td class="num">65</td><td>वामन</td><td>ॐ वामनाय नमः स्वाहा</td></tr><tr><td class="num">66</td><td>श्रीधर</td><td>ॐ श्रीधराय नमः स्वाहा</td></tr><tr><td class="num">67</td><td>हृषीकेश</td><td>ॐ हृषीकेशाय नमः स्वाहा</td></tr><tr><td class="num">68</td><td>पद्मनाभ</td><td>ॐ पद्मनाभाय नमः स्वाहा</td></tr><tr><td class="num">69</td><td>दामोदर</td><td>ॐ दामोदराय नमः स्वाहा</td></tr><tr><td class="num">70</td><td>अच्युत</td><td>ॐ अच्युताय नमः स्वाहा</td></tr><tr><td class="num">71</td><td>अनन्त विष्णु</td><td>ॐ अनन्तविष्णवे नमः स्वाहा</td></tr><tr><td class="num">72</td><td>पुरुषोत्तम</td><td>ॐ पुरुषोत्तमाय नमः स्वाहा</td></tr><tr><td class="num">73</td><td>वासुदेव</td><td>ॐ वासुदेवाय नमः स्वाहा</td></tr><tr><td class="num">74</td><td>संकर्षण</td><td>ॐ संकर्षणाय नमः स्वाहा</td></tr><tr><td class="num">75</td><td>प्रद्युम्न</td><td>ॐ प्रद्युम्नाय नमः स्वाहा</td></tr><tr><td class="num">76</td><td>अनिरुद्ध</td><td>ॐ अनिरुद्धाय नमः स्वाहा</td></tr><tr><td class="num">77</td><td>श्रीकृष्ण</td><td>ॐ कृष्णाय नमः स्वाहा</td></tr><tr><td class="num">78</td><td>बलराम</td><td>ॐ बलरामाय नमः स्वाहा</td></tr><tr><td class="num">79</td><td>गरुड़</td><td>ॐ गरुडाय नमः स्वाहा</td></tr><tr><td class="num">80</td><td>सुदर्शन चक्र</td><td>ॐ सुदर्शनाय नमः स्वाहा</td></tr><tr><td class="num">81</td><td>शिव</td><td>ॐ नमः शिवाय स्वाहा</td></tr><tr><td class="num">82</td><td>रुद्र</td><td>ॐ रुद्राय नमः स्वाहा</td></tr><tr><td class="num">83</td><td>पार्वती</td><td>ॐ पार्वत्यै नमः स्वाहा</td></tr><tr><td class="num">84</td><td>सरस्वती</td><td>ॐ सरस्वत्यै नमः स्वाहा</td></tr><tr><td class="num">85</td><td>ब्रह्माणी</td><td>ॐ ब्रह्माण्यै नमः स्वाहा</td></tr><tr><td class="num">86</td><td>माहेश्वरी</td><td>ॐ माहेश्वर्यै नमः स्वाहा</td></tr><tr><td class="num">87</td><td>कौमारी</td><td>ॐ कौमार्यै नमः स्वाहा</td></tr><tr><td class="num">88</td><td>वैष्णवी</td><td>ॐ वैष्णव्यै नमः स्वाहा</td></tr><tr><td class="num">89</td><td>वाराही</td><td>ॐ वाराह्यै नमः स्वाहा</td></tr><tr><td class="num">90</td><td>इन्द्राणी</td><td>ॐ इन्द्राण्यै नमः स्वाहा</td></tr><tr><td class="num">91</td><td>चामुण्डा</td><td>ॐ चामुण्डायै नमः स्वाहा</td></tr><tr><td class="num">92</td><td>क्षेत्रपाल</td><td>ॐ क्षेत्रपालाय नमः स्वाहा</td></tr><tr><td class="num">93</td><td>भैरव</td><td>ॐ भैरवाय नमः स्वाहा</td></tr><tr><td class="num">94</td><td>हनुमान</td><td>ॐ हनुमते नमः स्वाहा</td></tr><tr><td class="num">95</td><td>कुलदेवता</td><td>ॐ कुलदेवताभ्यो नमः स्वाहा</td></tr><tr><td class="num">96</td><td>कुलदेवी</td><td>ॐ कुलदेव्यै नमः स्वाहा</td></tr><tr><td class="num">97</td><td>ग्रामदेवता</td><td>ॐ ग्रामदेवताभ्यो नमः स्वाहा</td></tr><tr><td class="num">98</td><td>सर्वदेवता</td><td>ॐ सर्वेभ्यो देवेभ्यो नमः स्वाहा</td></tr><tr><td class="num">99</td><td>सर्वऋषि</td><td>ॐ सर्वेभ्यो ऋषिभ्यो नमः स्वाहा</td></tr><tr><td class="num">100</td><td>सर्वपितृ</td><td>ॐ सर्वेभ्यः पितृभ्यः स्वधा नमः</td></tr><tr><td class="num">101</td><td>लोकपाल</td><td>ॐ सर्वेभ्यो लोकपालेभ्यो नमः स्वाहा</td></tr><tr><td class="num">102</td><td>समस्त वास्तुदेवता</td><td>ॐ समस्तवास्तुदेवताभ्यो नमः स्वाहा</td></tr><tr><td class="num">103</td><td>समस्त नवग्रह</td><td>ॐ समस्तनवग्रहेभ्यो नमः स्वाहा</td></tr><tr><td class="num">104</td><td>समस्त मातृका</td><td>ॐ समस्तमातृकाभ्यो नमः स्वाहा</td></tr><tr><td class="num">105</td><td>समस्त परिवार देवता</td><td>ॐ समस्तपरिवारदेवताभ्यो नमः स्वाहा</td></tr><tr><td class="num">106</td><td>सर्वमंगल</td><td>ॐ सर्वमङ्गलायै नमः स्वाहा</td></tr><tr><td class="num">107</td><td>पूर्णता एवं शांति</td><td>ॐ शान्तिः शान्तिः शान्तिः स्वाहा</td></tr><tr><td class="num">108</td><td>प्रजापति</td><td>ॐ प्रजापतये नमः स्वाहा</td></tr></tbody></table><p class="small">नोट: सूची में पितृ-संबंधी पंक्ति “स्वधा” सहित है; इसे अग्नि में आहुति के रूप में तभी लें जब आपकी परंपरा में विधान हो। अन्यथा पुरोहित के निर्देश से उस पंक्ति को उपयुक्त देवता-मंत्र से बदलें। 108 की संख्या बनाए रखने के लिए बिना पुष्टि मनमाना बदलाव न करें।</p><div class="mantra" data-editable="true"><b>हवन समापन:</b><br>ॐ स्विष्टकृते स्वाहा।<br>ॐ पूर्णमदः पूर्णमिदं पूर्णात् पूर्णमुदच्यते।<br>पूर्णस्य पूर्णमादाय पूर्णमेवावशिष्यते॥</div></details></section><section class="section"><details open><summary><h2 style="display:inline">7. आरती</h2></summary>
+<div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> श्री गणेश जी की आरती</h3>
+<div data-editable="true">पहले गणेशजी की आरती करें।</div>
+<div class="mantra" data-editable="true">
+जय गणेश, जय गणेश, जय गणेश देवा।<br>
+माता जाकी पार्वती, पिता महादेवा॥<br><br>
+एकदन्त दयावन्त, चार भुजाधारी।<br>
+माथे पर तिलक सोहे, मूसे की सवारी॥<br>
+पान चढ़े, फूल चढ़े और चढ़े मेवा।<br>
+लड्डुअन का भोग लगे, सन्त करें सेवा॥ जय…॥<br><br>
+अन्धन को आँख देत, कोढ़िन को काया।<br>
+बाँझन को पुत्र देत, निर्धन को माया॥<br>
+सूर श्याम शरण आए, सफल कीजे सेवा।<br>
+माता जाकी पार्वती, पिता महादेवा॥ जय…॥
+</div></div>
+<div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> श्री सत्यनारायण भगवान की आरती</h3>
+<div class="mantra" data-editable="true">
+ॐ जय लक्ष्मी रमणा, स्वामी जय लक्ष्मी रमणा।<br>
+सत्यनारायण स्वामी, जन-पातक हरणा॥ ॐ जय…॥<br><br>
+रत्न जड़ित सिंहासन, अद्भुत छवि राजे।<br>
+नारद करत निरंजन, घंटा ध्वनि बाजे॥ ॐ जय…॥<br><br>
+प्रकट भए कलि कारण, द्विज को दरश दियो।<br>
+बूढ़ो ब्राह्मण बनकर, कंचन महल कियो॥ ॐ जय…॥<br><br>
+दुर्बल भील कठारो, जिन पर कृपा करी।<br>
+चन्द्रचूड़ एक राजा, तिनकी विपति हरी॥ ॐ जय…॥<br><br>
+वैश्य मनोरथ पायो, श्रद्धा तज दीनी।<br>
+सो फल भोग्यो प्रभुजी, फिर स्तुति कीन्ही॥ ॐ जय…॥<br><br>
+भाव-भक्ति के कारण, छिन-छिन कृपा करी।<br>
+सत्यनारायण स्वामी, सबकी विपति हरी॥ ॐ जय…॥<br><br>
+वन में विपदा पड़ी, लकड़ी काटे बनराई।<br>
+घर-घर विपदा टारी, जब-जब स्तुति गाई॥ ॐ जय…॥<br><br>
+चढ़त प्रसाद सवाया, कदलीफल मेवा।<br>
+धूप-दीप-तुलसी से, राजत तुलसी सेवा॥ ॐ जय…॥<br><br>
+सत्यनारायण की आरती, जो कोई नर गावे।<br>
+ऋद्धि-सिद्धि-सुख-सम्पत्ति, सहज ही पावे॥ ॐ जय…॥
+</div></div>
+<div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> श्री जगदीश जी की आरती</h3>
+<div class="mantra" data-editable="true">
+ॐ जय जगदीश हरे, स्वामी जय जगदीश हरे।<br>
+भक्त जनों के संकट, दास जनों के संकट,<br>
+क्षण में दूर करे॥ ॐ जय…॥<br><br>
+जो ध्यावे फल पावे, दुःख बिनसे मन का।<br>
+सुख-सम्पत्ति घर आवे, कष्ट मिटे तन का॥ ॐ जय…॥<br><br>
+मात-पिता तुम मेरे, शरण गहूँ किसकी।<br>
+तुम बिन और न दूजा, आस करूँ जिसकी॥ ॐ जय…॥<br><br>
+तुम पूर्ण परमात्मा, तुम अन्तर्यामी।<br>
+पारब्रह्म परमेश्वर, तुम सबके स्वामी॥ ॐ जय…॥<br><br>
+तुम करुणा के सागर, तुम पालनकर्ता।<br>
+मैं मूरख खल कामी, कृपा करो भर्ता॥ ॐ जय…॥<br><br>
+तुम हो एक अगोचर, सबके प्राणपति।<br>
+किस विधि मिलूँ दयामय, तुमको मैं कुमति॥ ॐ जय…॥<br><br>
+दीनबन्धु दुःखहर्ता, तुम रक्षक मेरे।<br>
+अपने हाथ उठाओ, द्वार पड़ा तेरे॥ ॐ जय…॥<br><br>
+विषय-विकार मिटाओ, पाप हरो देवा।<br>
+श्रद्धा-भक्ति बढ़ाओ, सन्तन की सेवा॥ ॐ जय…॥
+</div></div>
+<div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> आरती के बाद पुष्पांजलि</h3>
+<div class="mantra" data-editable="true">ॐ यानि कानि च पापानि जन्मान्तरकृतानि च।<br>
+तानि तानि विनश्यन्ति प्रदक्षिणे पदे पदे॥<br><br>
+ॐ सर्वेभ्यो देवेभ्यो नमः। आरार्तिक्यं समर्पयामि। पुष्पाञ्जलिं समर्पयामि॥</div></div>
+</details></section><section class="section"><details open><summary><h2 style="display:inline">8. क्षमा प्रार्थना</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> क्षमा याचना</h3><div data-editable="true">पूजा में हुई ज्ञात-अज्ञात त्रुटियों के लिए क्षमा माँगें।</div><div class="mantra" data-editable="true">आवाहनं न जानामि न जानामि विसर्जनम्।<br>पूजां चैव न जानामि क्षमस्व परमेश्वर॥<br><br>मन्त्रहीनं क्रियाहीनं भक्तिहीनं सुरेश्वर।<br>यत्पूजितं मया देव परिपूर्णं तदस्तु मे॥</div></div></details></section><section class="section"><details open><summary><h2 style="display:inline">9. विसर्जन</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> देवता विसर्जन</h3><div data-editable="true">हाथ जोड़कर देवताओं से अपने-अपने स्थान/धाम में विराजने की प्रार्थना करें; स्थापित कलश का जल घर/कार्यालय में मंगल हेतु छिड़कें या परंपरा अनुसार उपयोग करें।</div><div class="mantra" data-editable="true">ॐ यान्तु देवगणाः सर्वे पूजामादाय मामकीम्।<br>इष्टकामसमृद्ध्यर्थं पुनरागमनाय च॥</div></div></details></section><section class="section"><details open><summary><h2 style="display:inline">10. आसन समापन एवं उठने की विधि</h2></summary><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> आसन के नीचे जल</h3><div data-editable="true">आसन के नीचे थोड़ा जल छोड़ें। दाहिने हाथ से उस जल को स्पर्श कर मस्तक से लगाएँ।</div></div><div class="step"><h3 data-editable="true"><input class="check" type="checkbox"> अंतिम मंत्र</h3><div data-editable="true">अब हाथ जोड़कर ये तीनों नाम-मंत्र बोलें और फिर शांतिपूर्वक आसन से उठें।</div><div class="mantra" data-editable="true">ॐ इन्द्राय नमः।<br>ॐ शक्राय नमः।<br>ॐ वज्रहस्ताय नमः।</div></div></details></section><footer class="intro"><b>अंतिम जाँच:</b><p>☐ आरती पूर्ण &nbsp; ☐ क्षमा प्रार्थना &nbsp; ☐ विसर्जन &nbsp; ☐ आसन के नीचे जल डालकर मस्तक से लगाया &nbsp; ☐ “ॐ इन्द्राय नमः। ॐ शक्राय नमः। ॐ वज्रहस्ताय नमः।” बोलकर उठे।</p></footer>
+</main>
+<script>
+(function(){
+ const body=document.body;
+ const STORAGE_KEY='office_puja_editable_v1';
+ const toggle=document.getElementById('editToggle');
+ const save=document.getElementById('saveEdits');
+ const exportBtn=document.getElementById('exportEdits');
+ const reset=document.getElementById('resetEdits');
+ const status=document.getElementById('editStatus');
+ let editing=false;
+ const originalHTML=document.documentElement.outerHTML;
+
+ function setEditing(on){
+   editing=on;
+   body.classList.toggle('editing',on);
+   document.querySelectorAll('[data-editable="true"]').forEach(el=>{
+     el.contentEditable=on?'true':'false';
+     el.spellcheck=on;
+   });
+   toggle.textContent=on?'एडिट मोड बंद करें':'एडिट मोड चालू करें';
+   status.textContent=on?'अब मंत्र/शीर्षक/विवरण पर क्लिक करके बदलाव करें।':'एडिट मोड बंद है।';
+ }
+ function saveEdits(){
+   const data={
+     html: document.querySelector('main').innerHTML,
+     timestamp:new Date().toISOString()
+   };
+   try{
+     localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+     status.textContent='बदलाव इस ब्राउज़र में सेव हो गए। सुरक्षित प्रति के लिए “अपडेटेड HTML डाउनलोड करें” दबाएँ।';
+   }catch(e){
+     status.textContent='ब्राउज़र में सेव नहीं हो पाया। “अपडेटेड HTML डाउनलोड करें” से प्रति सुरक्षित करें।';
+   }
+ }
+ function restoreSaved(){
+   try{
+     const raw=localStorage.getItem(STORAGE_KEY);
+     if(!raw)return;
+     const data=JSON.parse(raw);
+     if(data.html){
+       document.querySelector('main').innerHTML=data.html;
+       status.textContent='पहले सेव किए गए बदलाव वापस लाए गए।';
+     }
+   }catch(e){status.textContent='पुराने सेव बदलाव पढ़े नहीं जा सके।';}
+ }
+ function exportHTML(){
+   const clone=document.documentElement.cloneNode(true);
+   clone.querySelectorAll('.edit-tools').forEach(x=>x.remove());
+   clone.querySelectorAll('#editorPanel').forEach(x=>x.remove());
+   clone.querySelectorAll('.controls').forEach(x=>x.remove());
+   clone.querySelectorAll('[contenteditable]').forEach(x=>{x.removeAttribute('contenteditable');x.removeAttribute('spellcheck');});
+   clone.querySelectorAll('script').forEach(x=>x.remove());
+   const exportScript=document.createElement('script');
+   exportScript.textContent='// Edited puja document. Reopen in browser to view and print.';
+   clone.body.appendChild(exportScript);
+   const blob=new Blob(['<!doctype html>\\n'+clone.outerHTML],{type:'text/html;charset=utf-8'});
+   const url=URL.createObjectURL(blob);
+   const a=document.createElement('a');
+   a.href=url;a.download='Office_Puja_Updated.html';a.click();
+   setTimeout(()=>URL.revokeObjectURL(url),1000);
+   status.textContent='अपडेटेड HTML फाइल डाउनलोड की गई।';
+ }
+ toggle.addEventListener('click',()=>setEditing(!editing));
+ save.addEventListener('click',saveEdits);
+ exportBtn.addEventListener('click',exportHTML);
+ reset.addEventListener('click',()=>{
+   if(confirm('क्या इस ब्राउज़र में सेव बदलाव हटाकर मूल पूजा सामग्री वापस लानी है?')){
+     localStorage.removeItem(STORAGE_KEY);
+     location.reload();
+   }
+ });
+ document.addEventListener('click',e=>{
+   const btn=e.target.closest('[data-action]');
+   if(!btn||!editing)return;
+   const step=btn.closest('.step');
+   if(!step)return;
+   const action=btn.dataset.action;
+   if(action==='up'&&step.previousElementSibling) step.parentNode.insertBefore(step,step.previousElementSibling);
+   if(action==='down'&&step.nextElementSibling) step.parentNode.insertBefore(step.nextElementSibling,step);
+   if(action==='delete'){
+     if(confirm('क्या यह पूजा-विधि भाग हटाना है?'))step.remove();
+   }
+   if(action==='add'){
+     const newStep=document.createElement('div');
+     newStep.className='step';
+     newStep.innerHTML='<h3 data-editable="true"><input class="check" type="checkbox"> नया पूजा चरण</h3><div data-editable="true">यहाँ विधि का विवरण लिखें।</div><div class="mantra" data-editable="true">यहाँ संस्कृत मंत्र लिखें।</div><div class="edit-tools"><button type="button" data-action="up">ऊपर</button><button type="button" data-action="down">नीचे</button><button type="button" data-action="add">नया भाग जोड़ें</button><button type="button" data-action="delete">यह भाग हटाएँ</button></div>';
+     step.after(newStep);
+     newStep.querySelectorAll('[data-editable="true"]').forEach(el=>el.contentEditable='true');
+   }
+ });
+ restoreSaved();
+ setEditing(false);
+})();
+</script>
+
+</body></html>
