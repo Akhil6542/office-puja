@@ -141,27 +141,54 @@ table{width:100%;border-collapse:collapse;background:white}th,td{border:1px soli
      if(!raw)return;
      const data=JSON.parse(raw);
      if(data.html){
-       document.querySelector('main').innerHTML=data.html;
+       const main=document.querySelector('main');
+       const livePanel=document.getElementById('editorPanel');
+       livePanel.remove();
+       main.innerHTML=data.html;
+       const savedPanel=main.querySelector('#editorPanel');
+       if(savedPanel)savedPanel.remove();
+       main.appendChild(livePanel);
        status.textContent='पहले सेव किए गए बदलाव वापस लाए गए।';
      }
    }catch(e){status.textContent='पुराने सेव बदलाव पढ़े नहीं जा सके।';}
  }
+ function ensureStepTools(){
+   document.querySelectorAll('main .step').forEach(step=>{
+     if(step.querySelector('.edit-tools'))return;
+     const tools=document.createElement('div');
+     tools.className='edit-tools';
+     tools.innerHTML='<button type="button" data-action="up">ऊपर</button><button type="button" data-action="down">नीचे</button><button type="button" data-action="add">नया भाग जोड़ें</button><button type="button" data-action="delete">यह भाग हटाएँ</button>';
+     step.appendChild(tools);
+   });
+ }
  function exportHTML(){
-   const clone=document.documentElement.cloneNode(true);
-   clone.querySelectorAll('.edit-tools').forEach(x=>x.remove());
-   clone.querySelectorAll('#editorPanel').forEach(x=>x.remove());
-   clone.querySelectorAll('.controls').forEach(x=>x.remove());
-   clone.querySelectorAll('[contenteditable]').forEach(x=>{x.removeAttribute('contenteditable');x.removeAttribute('spellcheck');});
-   clone.querySelectorAll('script').forEach(x=>x.remove());
-   const exportScript=document.createElement('script');
-   exportScript.textContent='// Edited puja document. Reopen in browser to view and print.';
-   clone.body.appendChild(exportScript);
-   const blob=new Blob(['<!doctype html>\\n'+clone.outerHTML],{type:'text/html;charset=utf-8'});
-   const url=URL.createObjectURL(blob);
-   const a=document.createElement('a');
-   a.href=url;a.download='Office_Puja_Updated.html';a.click();
-   setTimeout(()=>URL.revokeObjectURL(url),1000);
-   status.textContent='अपडेटेड HTML फाइल डाउनलोड की गई।';
+   try{
+     const clone=document.documentElement.cloneNode(true);
+
+     // डाउनलोड की गई फाइल में एडिट पैनल और उसके JavaScript को सुरक्षित रखें।
+     // केवल वर्तमान एडिटिंग स्थिति हटाएँ, ताकि फाइल सामान्य रूप से खुले।
+     clone.querySelectorAll('[contenteditable]').forEach(el=>{
+       el.removeAttribute('contenteditable');
+       el.removeAttribute('spellcheck');
+     });
+     clone.body.classList.remove('editing');
+
+     const html='<!doctype html>\n'+clone.outerHTML;
+     const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+     const url=URL.createObjectURL(blob);
+     const a=document.createElement('a');
+     a.href=url;
+     a.download='Office_Puja_Updated.html';
+     a.style.display='none';
+     document.body.appendChild(a);
+     a.click();
+     a.remove();
+
+     status.textContent='डाउनलोड शुरू किया गया। यदि फाइल न दिखे तो ब्राउज़र के Downloads आइकन/फोल्डर में देखें।';
+     setTimeout(()=>URL.revokeObjectURL(url),60000);
+   }catch(e){
+     status.textContent='स्वचालित डाउनलोड नहीं हो पाया। कृपया दूसरे ब्राउज़र (Chrome/Firefox) में खोलकर फिर प्रयास करें।';
+   }
  }
  toggle.addEventListener('click',()=>setEditing(!editing));
  save.addEventListener('click',saveEdits);
@@ -188,10 +215,12 @@ table{width:100%;border-collapse:collapse;background:white}th,td{border:1px soli
      newStep.className='step';
      newStep.innerHTML='<h3 data-editable="true"><input class="check" type="checkbox"> नया पूजा चरण</h3><div data-editable="true">यहाँ विधि का विवरण लिखें।</div><div class="mantra" data-editable="true">यहाँ संस्कृत मंत्र लिखें।</div><div class="edit-tools"><button type="button" data-action="up">ऊपर</button><button type="button" data-action="down">नीचे</button><button type="button" data-action="add">नया भाग जोड़ें</button><button type="button" data-action="delete">यह भाग हटाएँ</button></div>';
      step.after(newStep);
+     ensureStepTools();
      newStep.querySelectorAll('[data-editable="true"]').forEach(el=>el.contentEditable='true');
    }
  });
  restoreSaved();
+ ensureStepTools();
  setEditing(false);
 })();
 </script>
